@@ -1,6 +1,6 @@
 import HeroSection from "@/components/hero";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { features } from "./data/features";
 import { howItWorks } from "./data/howItWorks";
 import { testimonial } from "./data/testimonial";
