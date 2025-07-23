@@ -2,15 +2,16 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { generateAIInsights } from "./dashboard";
 
 export async function updateUser(data){
     const {userId} = await auth();
     if (!userId) throw new Error("Unauthorized");
 
-    const user = await db.user.findUnique({
+    const user = await db.User.findUnique({
         where: {
             clerkUserId: userId,
-        }
+        },
     })
 
     if (!user) throw new Error("User Not Found");
@@ -19,26 +20,22 @@ export async function updateUser(data){
     const result = await db.$transaction( 
         async (tx)=> {
         //find if industry exists
-        let industryInsights = await tx.industryInsights.findUnique({
+        let industryInsight = await tx.industryInsight.findUnique({
             where: {
                 industry: data.industry,
             }
         })
        // if industry doesnt exist, create it with default value for now 
-       if (!industryInsights) {
-            industryInsights = await tx.industryInsights.create({
+       if (!industryInsight) {
+            const insights = await generateAIInsights(data.industry)
+
+            await db.industryInsight.create({
                 data: {
                     industry: data.industry,
-                    salaryRanges: [],
-                    growthRate: 0,
-                    demandLevel: "Medium",
-                    topSkills: [],
-                    marketOutlooks: "Neutral",
-                    keyTrends: [],
-                    recommendedSkills: [],
-                    nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                    ...insights,
+                    nextUpdate: new Date(Date.now()+7*24*60*60*1000)
                 }
-            })
+            });
         }
 
        //update user
@@ -53,16 +50,14 @@ export async function updateUser(data){
             skills: data.skills,
         },
        });
-
-       return {updatedUser, industryInsights};
-
+       return {updatedUser, industryInsight};
         }, 
-        {timeout: 10000}
+        {timeout: 15000}
     );
-    return result.user;
+    return {success: true, ...result};
     } catch (error) {
         console.error("Error updating user and industry:", error.message);
-        throw new Error("Failed to update profile");
+        throw new Error("Failed to update profile" + error.message);
     }
 }
 

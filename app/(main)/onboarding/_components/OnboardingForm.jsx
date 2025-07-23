@@ -23,10 +23,19 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import useFetch from "@/hooks/use-fetch"
+import { updateUser } from "@/actions/user"
+import { Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 const OnboardingForm = ({industries}) => {
     const [selectedIndustry, setSelectedIndustry] = useState(null);
     const router = useRouter();
+
+    const {
+        loading: updateLoading,
+        fn: updateUserFn,
+        data: updateResult} = useFetch(updateUser)
 
     const 
     {register, handleSubmit, formState: {errors}, setValue, watch} = 
@@ -35,15 +44,28 @@ const OnboardingForm = ({industries}) => {
     })
 
     const onSubmit = async (values) => {
-        console.log(values)
+        try{
+            const formattedIndustry = `${values.industry}-${values.subIndustry}`.toLowerCase().replace(/ /g, "-")
+
+            await updateUserFn({
+                ...values, industry: formattedIndustry,
+            });
+        }
+        catch (error){
+            console.error("Onboarding error: ", error)
+        }
     }
 
     const watchIndustry = watch("industry");
 
-    useEffect(() => {
-        register("industry"); 
-        register("subIndustry")
-    }, [register]);
+    useEffect(()=>{
+        if (updateResult?.success && !updateLoading){
+            toast.success("Profile completed successfully!");
+            router.push("/dashboard");
+            router.refresh();
+        }
+
+    }, [updateResult, updateLoading])
 
   return (
     <div className="flex items-center justify-center">
@@ -150,8 +172,15 @@ const OnboardingForm = ({industries}) => {
                 </div>
 
                 {/* Submit Button */}
-                <Button type="submit" className="w-full">
-                    Complete Profile
+                <Button type="submit" className="w-full" disabled={updateLoading}>
+                    {updateLoading ? (
+                        <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Saving...
+                        </>
+                    ) : (
+                        "Complete Profile"
+                    )}
                 </Button>
             </form>
         </CardContent>

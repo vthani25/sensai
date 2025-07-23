@@ -95,7 +95,7 @@ model IndustryInsight{
   keyTrends         String[] //Array of key trends in the industry
 
   //Learning suggestions
-  learningResources String[] //Array of resources like courses, articles, etc. for that industry
+  recommendedSkills String[] //Array of resources like courses, articles, etc. for that industry
 
   lastUpdated      DateTime  @default(now())
   nextUpdate       DateTime //When to next update this data
