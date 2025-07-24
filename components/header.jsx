@@ -54,12 +54,12 @@ const Header = async () => {
                                 <span>Build Resume</span>
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        {/* <DropdownMenuItem>
                             <Link href="/cover-letter" className="flex items-center space-x-2">
                                 <PenBox className="mr-2 h-4 w-4" />
                                 <span>Cover Letter</span>
                             </Link>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem>
                             <Link href="/interview" className="flex items-center space-x-2">
                                 <GraduationCap className="mr-2 h-4 w-4" />
