@@ -20,6 +20,7 @@ import { saveResume } from "@/actions/resume";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
 import { resumeSchema } from "@/lib/schema";
+import EntryForm from "./EntryForm";
 
 const ResumeBuilder = ({initialContent}) => {
     const [activeTab, setActiveTab] = useState("edit");
