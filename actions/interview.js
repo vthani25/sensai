@@ -23,7 +23,7 @@ export async function generateQuiz() {
 
     try{
         const prompt = `
-            Generate 3 technical interview questions for a ${
+            Generate 10 technical interview questions for a ${
             user.industry
             } professional ${
             user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
@@ -137,4 +137,30 @@ export async function saveQuizResult(questions, answers, score) {
         }
 }
 
+export async function getAssessments() {
+    const {userId} = await auth();
+    if (!userId) throw new Error("Unauthorized");
+    
+    const user = await db.User.findUnique({
+        where: {
+            clerkUserId: userId,
+        },
+    })
 
+    if (!user) throw new Error("User Not Found");
+
+    try {
+        const assessments = await db.assessment.findMany({
+            where:{
+                userId: user.id
+            },
+            orderBy: {
+                createdAt: "asc"
+            },
+        });
+        return assessments;
+
+    } catch (error) {
+
+    }
+}
