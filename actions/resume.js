@@ -49,7 +49,7 @@ export async function getResume(){
     const {userId} = await auth();
         if (!userId) throw new Error("Unauthorized");
     
-        const user = await db.User.findUnique({
+        const user = await db.user.findUnique({
             where: {
                 clerkUserId: userId,
             },

@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useFetch from '@/hooks/use-fetch';
 import { entrySchema} from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, PlusCircle, Sparkles } from 'lucide-react';
+import { Loader2, PlusCircle, Sparkles, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 
