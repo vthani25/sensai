@@ -18,6 +18,8 @@ import { BarLoader } from "react-spinners";
 import { Loader2 } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import QuizResult from "./QuizResult";
+import { toast } from "sonner";
 
 const Quiz = () => {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -94,7 +96,7 @@ const Quiz = () => {
     if (resultData) {
         return (
             <div className="mx-2">
-                <QuizResult result="resultData" onStartNew={startNewQuiz}/>
+                <QuizResult result={resultData} onStartNew={startNewQuiz}/>
             </div>
         )
     }
@@ -133,7 +135,7 @@ const Quiz = () => {
             value={answers[currentQuestion]}>
                 {question.options.map((option, index)=>(
                     <div className="flex items-center space-x-2" key={index}>
-                    <RadioGroupItem value={option} id={`option-${index}`} />
+                    <RadioGroupItem value={option} id={`option-${index}`} disabled={showExplanation} />
                     <Label htmlFor={`option-${index}`}>{option}</Label>
                 </div>
             ))}
@@ -148,15 +150,16 @@ const Quiz = () => {
         <CardFooter>
             {!showExplanation && (
                 // button to show explanation
-                <Button
+            <Button
                 onClick={() => setShowExplanation(true)}
                 variant="outline"
-                disabled={!answers[currentQuestion]}> Show Explanation 
-                </Button>
+                disabled={!answers[currentQuestion]}> 
+                Show Explanation 
+            </Button>
             )}
             
             {/* button to move to next question */}
-                <Button
+            <Button
                 onClick={handleNext}
                 className="ml-auto"
                 disabled={!answers[currentQuestion] || savingResult}> 
@@ -168,7 +171,7 @@ const Quiz = () => {
                     ? "Next Question"
                     : "Finish Quiz"
                 }
-                </Button>
+            </Button>
                 
         </CardFooter>
     </Card>
