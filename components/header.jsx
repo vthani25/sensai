@@ -1,7 +1,7 @@
 "use client"
 
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
@@ -18,13 +18,21 @@ import {
 const Header = () => {
     const { user, isLoaded } = useUser();
     const router = useRouter();
+    const searchParams = useSearchParams();
     useEffect(()=>{
-        if (isLoaded && user && !user.publicMetadata?.isOnboarded)   {
-        router.push('/onboarding');
-    } else {
-        router.push('/dashboard');
+        const fromLogin = searchParams.get('fromLogin') === 'true';
+        if (!fromLogin) return;
+
+        if (isLoaded && user)  {
+            if (!user.publicMetadata?.isOnboarded) {
+                router.push('/onboarding');
+            }
+            else {
+                router.push('/dashboard');
+            }
     }
-  }, [user, isLoaded, router])
+
+  }, [user, isLoaded, router, searchParams])
 
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 py-4 backdrop-blur-lg z-50 supports-[backdrop-filter]:bg-background/60">
