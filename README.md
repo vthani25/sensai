@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎯 SensAI – Smart AI Career Coach
 
-## Getting Started
+SensAI is your personal AI-powered career companion designed to help users explore careers, build resumes, prep for interviews, and stay informed with weekly insights.
 
-First, run the development server:
+🌐 **Live Demo**: [https://sensai-azure-phi.vercel.app](https://sensai-azure-phi.vercel.app)
+
+---
+
+## Key Features
+
+✅ **Personalized Onboarding**  
+Tailors content and recommendations based on user goals.
+
+📊 **Weekly Industry Insights**  
+Auto-generated every Sunday using the **Gemini API** – no manual updates needed.
+
+📄 **Resume Builder**  
+Simple, clean interface to create, edit, and **download** your resume.
+
+🎤 **Interview Prep**  
+Practice with smart AI-generated questions and review performance stats.
+
+📈 **Dashboard**  
+Track resumes, mock interviews, and career goals — all in one place.
+
+---
+| 📸 Screenshots |
+|------------------------|
+| **Homepage** |
+| ![Homepage](https://hc-cdn.hel1.your-objectstorage.com/s/v3/e22f7b75aa0a1a0012fb0840c3702ae3edc951fd_image.png) |
+| **Industry Insights** |
+| ![Insights](https://hc-cdn.hel1.your-objectstorage.com/s/v3/9bff18df934825170c9c07dccabfb270af4af2a4_image.png) |
+| **Resume Building** |
+| ![Resume](https://hc-cdn.hel1.your-objectstorage.com/s/v3/a3ace0e948ed80ea4ff704a4bfa28111aeeb2819_image.png) |
+---
+
+## Tech Stack
+
+- **Frontend**: Next.js 14, TailwindCSS, React
+- **Auth**: Clerk
+- **AI Engine**: Gemini API
+- **Resume Export**: react-to-print
+
+---
+
+## 🚀 Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/vthani25/sensai.git
+cd sensai
+
+# Install dependencies
+npm install
+
+# Add environment variables
+# .env.local
+CLERK_PUBLISHABLE_KEY=your_key
+CLERK_SECRET_KEY=your_key
+GEMINI_API_KEY=your_key
+
+# Run locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
