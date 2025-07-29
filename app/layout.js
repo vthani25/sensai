@@ -7,6 +7,8 @@ import {
 } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
 import { Toaster } from "@/components/ui/sonner";
+import React, { Suspense } from 'react'
+import {BarLoader, CircleLoader} from "react-spinners"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -48,5 +50,8 @@ export default function RootLayout({ children }) {
       </body>
     </html>
     </ClerkProvider>
+    
   );
 }
+
+
