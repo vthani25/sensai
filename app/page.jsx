@@ -17,7 +17,6 @@ import {
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation"; 
 import { useUser } from "@clerk/nextjs";
 import { BarLoader } from "react-spinners";
 

@@ -1,27 +1,28 @@
-import { getUserOnboardingStatus } from "@/actions/user"
+"use client"
+
+
 import { industries } from "@/app/data/industries"
 import { redirect } from "next/navigation";
 import OnboardingForm from "./_components/OnboardingForm";
-import { checkUser } from "@/lib/checkUser";
+import { useUser } from "@clerk/nextjs";
+import { BarLoader } from "react-spinners";
 
-const OnboardingPage = async () => {
-  const { user } = await checkUser()
+const OnboardingPage = () => {
+  const { user, isLoaded } = useUser();
 
-  if (!user) {
-    redirect("/sign-in")
+  if (!isLoaded) {
+    return <BarLoader className="mt-10" width={"100%"} color="gray"/>
   }
 
-  const {isOnboarded} = await getUserOnboardingStatus();
-
-  if (isOnboarded) {
-     redirect("/dashboard");
-  }
-  
-  return (
+  if (user) {
+    return (
     <main>
         <OnboardingForm industries={industries}/>
     </main>
   )
+  }
+  
+  
 }
 
 export default OnboardingPage

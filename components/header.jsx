@@ -18,11 +18,7 @@ import {
 const Header = () => {
     const { user, isLoaded } = useUser();
     const router = useRouter();
-    const searchParams = useSearchParams();
     useEffect(()=>{
-        const fromLogin = searchParams.get('fromLogin') === 'true';
-        if (!fromLogin) return;
-
         if (isLoaded && user)  {
             if (!user.publicMetadata?.isOnboarded) {
                 router.push('/onboarding');
@@ -32,7 +28,7 @@ const Header = () => {
             }
     }
 
-  }, [user, isLoaded, router, searchParams])
+  }, [user, isLoaded, router])
 
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 py-4 backdrop-blur-lg z-50 supports-[backdrop-filter]:bg-background/60">
