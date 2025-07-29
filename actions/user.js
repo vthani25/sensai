@@ -1,20 +1,33 @@
 "use server";
 
 import { db } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { clerkClient } from "@clerk/nextjs/server";
+
 import { generateAIInsights } from "./dashboard";
 
 export async function updateUser(data){
     const {userId} = await auth();
     if (!userId) throw new Error("Unauthorized");
 
-    const user = await db.User.findUnique({
-        where: {
-            clerkUserId: userId,
-        },
-    })
+    let existingUser = await db.user.findUnique({
+            where: {
+                clerkUserId: userId,
+            },
+        })
 
-    if (!user) throw new Error("User Not Found");
+    const user = await currentUser();
+        // Create the user if not found
+        if (!existingUser) {
+            existingUser = await db.user.create({
+            data: {
+                clerkUserId: user.id,
+                name: `${user.firstName ?? ''} ${user.lastName ?? ''}`,
+                imageUrl: user.imageUrl,
+                email: user.emailAddresses[0]?.emailAddress ?? '',
+            },
+            });
+        }
 
     try{
     const result = await db.$transaction( 
@@ -41,7 +54,7 @@ export async function updateUser(data){
        //update user
        const updatedUser = await tx.user.update({
         where: {
-            id:user.id,
+            id:existingUser.id,
         },
         data: {
             industry: data.industry,
@@ -54,6 +67,7 @@ export async function updateUser(data){
         }, 
         {timeout: 15000}
     );
+    
     return {success: true, ...result};
     } catch (error) {
         console.error("Error updating user and industry:", error.message);

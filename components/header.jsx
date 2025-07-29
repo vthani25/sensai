@@ -1,7 +1,10 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+"use client"
+
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from './ui/button'
 import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarsIcon } from 'lucide-react'
 
@@ -11,10 +14,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { checkUser } from '@/lib/checkUser'
 
-const Header = async () => {
-  await checkUser();
+const Header = () => {
+    const { user, isLoaded } = useUser();
+    const router = useRouter();
+    useEffect(()=>{
+        if (isLoaded && user && !user.publicMetadata?.isOnboarded)   {
+        router.push('/onboarding');
+    } else {
+        router.push('/dashboard');
+    }
+  }, [user, isLoaded, router])
 
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 py-4 backdrop-blur-lg z-50 supports-[backdrop-filter]:bg-background/60">
@@ -76,7 +86,11 @@ const Header = async () => {
                 <SignInButton> 
                     <Button variant="outline">Sign In</Button>
                 </SignInButton>
+                <SignUpButton forceRedirectUrl="/onboarding">
+                    <button className="border rounded-lg px-4 py-2 text-sm hover:cursor-pointer">Sign Up</button>
+                </SignUpButton>
             </SignedOut>
+            
             <SignedIn>
                 <UserButton appearance={{elements:
                     {avatarBox: "w-10 h-10",
