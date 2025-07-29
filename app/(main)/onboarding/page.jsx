@@ -5,20 +5,18 @@ import OnboardingForm from "./_components/OnboardingForm";
 import { checkUser } from "@/lib/checkUser";
 
 const OnboardingPage = async () => {
-  // const { user } = await checkUser()
+  const { user } = await checkUser()
 
-  // if (!user) {
-  //   redirect("/sign-in")
-  // }
+  if (!user) {
+    redirect("/sign-in")
+  }
 
-  // const {isOnboarded} = await getUserOnboardingStatus();
+  const {isOnboarded} = await getUserOnboardingStatus();
 
-  // if (isOnboarded) {
-  //   redirect("/dashboard");
-  // } else {
-  //   redirect("/onboarding");
-  // }
-
+  if (isOnboarded) {
+     redirect("/dashboard");
+  }
+  
   return (
     <main>
         <OnboardingForm industries={industries}/>
